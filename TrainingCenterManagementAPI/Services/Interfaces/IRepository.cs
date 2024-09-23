@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrainingCenterManagement.Infrastructure.Interfaces
+namespace TrainingCenterManagementAPI.Services.Interfaces
 {
     public interface IRepository<T>
     {

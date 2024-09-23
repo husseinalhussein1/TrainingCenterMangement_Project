@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrainingCenterManagement.Infrastructure;
-using TrainingCenterManagement.Infrastructure.Interfaces;
+using TrainingCenterManagementAPI.Services.Interfaces;
 
-namespace TelevisionProgram.Infrastructure.Repositories
+namespace TrainingCenterManagementAPI.Services.Repositories
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
