@@ -51,7 +51,7 @@ namespace TrainingCenterManagement.Domain
         {
             Trainees = new List<Trainee>();
             Presences = new List<Presence>();
-            Trainees = new List<Trainee>();
+            Trainers = new List<Trainer>();
             CourseId = Guid.NewGuid();
             CreatedData = DateTime.UtcNow;
             Lectures = new List<Lecture>();

@@ -7,6 +7,7 @@ using System.Text;
 using TrainingCenterManagement.Infrastructure;
 using TrainingCenterManagementAPI.Interfaces;
 using TrainingCenterManagementAPI.Services.Repositories;
+using Microsoft.Extensions.FileProviders;//for static file
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,10 +39,10 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    // جلب مسار الملف الافضل هكذا لتجنب الخطأ بجلبه بتغيير الاماكن
+/*    // جلب مسار الملف الافضل هكذا لتجنب الخطأ بجلبه بتغيير الاماكن
     var pathFileXml = Path.Combine(AppContext.BaseDirectory, "TrainingCenterManagementAPI.xml");
     // تضمين هذا الملف لل swagger
-    options.IncludeXmlComments(pathFileXml);
+    options.IncludeXmlComments(pathFileXml);*/
     //name selection
     options.AddSecurityDefinition("TrainingCenterManagementAPIAuthentcate", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
     {
@@ -58,6 +59,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<TrainingCenterManagementDbContext>(
     options => options.UseSqlServer(builder.Configuration["ConnectionStrings:TrainingCenterManagementDBConnectionString"]));
+//builder.Services.AddDbContext<TrainingCenterManagementDbContext>();
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -142,6 +144,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//for static file
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "StaticFiles")),
+    RequestPath = "/StaticFiles"
+});
+
+
 // token
 app.UseAuthentication();
 
@@ -150,5 +162,12 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+
+// for Testing Database
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<TrainingCenterManagementDbContext>();
+    TrainingCenterManagementDbContext.CreatInitalTestingDatabase(context);
+}
 
 app.Run();

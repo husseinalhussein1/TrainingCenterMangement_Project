@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using TrainingCenterManagement.Domain;
 
 namespace TrainingCenterManagement.Infrastructure
@@ -20,12 +21,23 @@ namespace TrainingCenterManagement.Infrastructure
         public DbSet<TrainingOfficer> TrainingOfficers { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        private readonly IConfiguration configuration;
+
+        public TrainingCenterManagementDbContext(
+            DbContextOptions<TrainingCenterManagementDbContext> options,
+            IConfiguration configuration)
+            : base(options)
+        {
+            this.configuration = configuration;
+        }
+
+
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TrainingCenterManagement_DB";
             //optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
-        }
+        }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -110,6 +122,330 @@ namespace TrainingCenterManagement.Infrastructure
 
             base.OnModelCreating(modelBuilder); 
         }
+
+
+        // for Testing Database
+        public static void CreatInitalTestingDatabase(TrainingCenterManagementDbContext context)
+        {
+            //Delete if exists
+            context.Database.EnsureDeleted();
+
+            // Migration (Create and appliy Migration)
+            context.Database.Migrate();
+
+            // add dummy data (seeding data)
+
+            //==============================
+
+            //(Trainee)*4
+            var trainee1 = new Trainee
+            {
+                FirstName = "Ali",
+                LastName = "Ahmad",
+                PhoneNumber = "1234567890",
+                Account = new Account
+                {
+                    UserName = "ali",
+                    Password = "1234567890",
+                    Email = "ali@gmail.com",
+                    IsRemember = true
+                }
+            };
+
+            var trainee2 = new Trainee
+            {
+                FirstName = "Sara",
+                LastName = "Salem",
+                PhoneNumber = "1234567890",
+                Account = new Account
+                {
+                    UserName = "sara",
+                    Password = "1234567890",
+                    Email = "sara@gmail.com",
+                    IsRemember = true
+                }
+            };
+
+            var trainee3 = new Trainee
+            {
+                FirstName = "Omar",
+                LastName = "Khaled",
+                PhoneNumber = "1234567890",
+                Account = new Account
+                {
+                    UserName = "omar",
+                    Password = "1234567890",
+                    Email = "omar@gmail.com",
+                    IsRemember = true
+                }
+            };
+
+            var trainee4 = new Trainee
+            {
+                FirstName = "Nada",
+                LastName = "Hassan",
+                PhoneNumber = "1234567890",
+                Account = new Account
+                {
+                    UserName = "nada",
+                    Password = "1234567890",
+                    Email = "nada@gmail.com",
+                    IsRemember = true
+                }
+            };
+            //==============================
+
+            //  (Trainer)
+            var trainer = new Trainer
+            {
+                FirstName = "Mohammad",
+                LastName = "Nour",
+                PhoneNumber = "1234567890",
+                Specialty = "Software Development",
+                YearsOfExperience = 5,
+                BusinessLink = "http://linkedin.com/mohammad",
+                Account = new Account
+                {
+                    UserName = "mohammad",
+                    Password = "1234567890",
+                    Email = "mohammad@gmail.com",
+                    IsRemember = true
+                }
+            };
+            //==============================
+
+            //(Training Officer)
+            var trainingOfficer = new TrainingOfficer
+            {
+                FirstName = "Huda",
+                LastName = "Ali",
+                PhoneNumber = "1234567890",
+                Account = new Account
+                {
+                    UserName = "huda",
+                    Password = "1234567890",
+                    Email = "huda@gmail.com",
+                    IsRemember = true
+                }
+            };
+            //==============================
+
+            //(Administrator)
+            var admin = new Administrator
+            {
+                FirstName = "Ahmed",
+                LastName = "Hassan",
+                PhoneNumber = "1234567890",
+                Account = new Account
+                {
+                    UserName = "admin",
+                    Password = "admin",
+                    Email = "admin@gmail.com",
+                    IsRemember = true
+                }
+            };
+            //==============================
+
+            // (Course 1)
+            var course1 = new Course
+            {
+                CourseName = "ASP.NET Core",
+                BatchNumber = 1,
+                NumberOfLectures = 10,
+                Price = 150.00f,
+                ReleaseDate = DateTime.UtcNow,
+                TrainingOfficerId = trainingOfficer.Id,
+                TrainingOfficer = trainingOfficer
+            };
+            //==============================
+
+            //(Course 2)
+            var course2 = new Course
+            {
+                CourseName = "Angular",
+                BatchNumber = 2,
+                NumberOfLectures = 12,
+                Price = 200.00f,
+                ReleaseDate = DateTime.UtcNow.AddDays(7),
+                TrainingOfficerId = trainingOfficer.Id,
+                TrainingOfficer = trainingOfficer
+            };
+            //==============================
+
+            //(Many-to-Many: Trainee <-> Course)
+            course1.Trainees.Add(trainee1);
+            course1.Trainees.Add(trainee2);
+            course2.Trainees.Add(trainee3);
+            course2.Trainees.Add(trainee4);
+
+            trainee1.Courses.Add(course1);
+            trainee2.Courses.Add(course1);
+            trainee3.Courses.Add(course2);
+            trainee4.Courses.Add(course2);
+            //==============================
+
+            //(Many-to-Many: Course <-> Trainer)
+            course1.Trainers.Add(trainer);
+            course2.Trainers.Add(trainer);
+            //==============================
+
+            //(Lectures)*2
+            var lecture1 = new Lecture
+            {
+                Titel = "Introduction to ASP.NET Core",
+                Description = "Overview of the ASP.NET Core framework",
+                VedioUrl = "~/StaticFiles/LectureVideos/ASP.NET_Core_1/ASP.NET_Core_1_Lecture_1.mp4",
+                ThumbnailUrl = "~/StaticFiles/LectureThumbnails/ASP.NET_Core_1/ASP.NET_Core_1_Lecture_1.png",
+                CourseId = course1.CourseId,
+                Course = course1
+            };
+
+            var lecture2 = new Lecture
+            {
+                Titel = "Angular Basics",
+                Description = "Getting started with Angular",
+                VedioUrl = "~/StaticFiles/LectureVideos/Angular_2/Angular_2_Lecture_1.mp4",
+                ThumbnailUrl = "~/StaticFiles/LectureThumbnails/Angular_2/Angular_2_Lecture_1.png",
+                Course = course2
+            };
+
+            course1.Lectures.Add(lecture1);
+            course2.Lectures.Add(lecture2);
+            //==============================
+
+            //(Many-to-Many: Lecture <-> Trainee through Presence)
+            var presence1 = new Presence
+            {
+                IsPresence = true,
+                TraineeId = trainee1.Id,
+                Trainee = trainee1,
+                LectureId = lecture1.LectureId,
+                Lecture = lecture1
+            };
+
+            var presence2 = new Presence
+            {
+                IsPresence = true,
+                TraineeId = trainee3.Id,
+                Trainee = trainee3,
+                LectureId = lecture2.LectureId,
+                Lecture = lecture2
+            };
+
+            lecture1.Presences.Add(presence1);
+            lecture2.Presences.Add(presence2);
+            //==============================
+
+            //(Payments)
+            var payment1 = new Payment
+            {
+                TotalAmount = 150,
+                CourseId = course1.CourseId,
+                TraineeId = trainee1.Id,
+                Trainee = trainee1
+            };
+
+            var payment2 = new Payment
+            {
+                TotalAmount = 150,
+                CourseId = course1.CourseId,
+                TraineeId = trainee2.Id,
+                Trainee = trainee3
+            };
+
+            var payment3 = new Payment
+            {
+                TotalAmount = 150,
+                CourseId = course1.CourseId,
+                TraineeId = trainee3.Id,
+                Trainee = trainee1
+            };
+
+            var payment4 = new Payment
+            {
+                TotalAmount = 150,
+                CourseId = course1.CourseId,
+                TraineeId = trainee4.Id,
+                Trainee = trainee1
+            };
+
+            //===============
+
+            var payment5 = new Payment
+            {
+                TotalAmount = 200,
+                CourseId = course2.CourseId,
+                TraineeId = trainee1.Id,
+                Trainee = trainee1
+            };
+
+            var payment6 = new Payment
+            {
+                TotalAmount = 200,
+                CourseId = course2.CourseId,
+                TraineeId = trainee2.Id,
+                Trainee = trainee3
+            };
+
+            var payment7 = new Payment
+            {
+                TotalAmount = 200,
+                CourseId = course2.CourseId,
+                TraineeId = trainee3.Id,
+                Trainee = trainee1
+            };
+
+            var payment8 = new Payment
+            {
+                TotalAmount = 200,
+                CourseId = course2.CourseId,
+                TraineeId = trainee4.Id,
+                Trainee = trainee1
+            };
+            //Adding payments to courses
+            course1.Payments.Add(payment1);
+            course1.Payments.Add(payment2);
+            course1.Payments.Add(payment3);
+            course1.Payments.Add(payment4);
+
+            course2.Payments.Add(payment1);
+            course2.Payments.Add(payment2);
+            course2.Payments.Add(payment3);
+            course2.Payments.Add(payment4);
+
+            //Adding payments to trainees
+            trainee1.Payments.Add(payment1);
+            trainee1.Payments.Add(payment5);
+
+            trainee2.Payments.Add(payment2);
+            trainee2.Payments.Add(payment6);
+
+            trainee3.Payments.Add(payment3);
+            trainee3.Payments.Add(payment7);
+
+            trainee4.Payments.Add(payment4);
+            trainee4.Payments.Add(payment8);
+
+            //==============================
+
+            // Adding to context
+            context.Trainees.AddRange(trainee1, trainee2, trainee3, trainee4);
+            context.Trainers.Add(trainer);
+            context.TrainingOfficers.Add(trainingOfficer);
+            context.Administrators.Add(admin);
+            context.Courses.AddRange(course1, course2);
+            context.Lectures.AddRange(lecture1, lecture2);
+            context.Presences.AddRange(presence1, presence2);
+            context.Payments.AddRange(payment1, payment2,payment3,payment4,payment5,payment6,payment7,payment8);
+
+            //==============================
+
+            //Save Data on DB
+            context.SaveChanges();
+        }
+
+
+
     }
 
 
