@@ -22,8 +22,8 @@ namespace TrainingCenterManagement.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TrainingCenterManagement_DB";
-            optionsBuilder.UseSqlServer(connectionString);
+            //var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TrainingCenterManagement_DB";
+            //optionsBuilder.UseSqlServer(connectionString);
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -65,7 +65,48 @@ namespace TrainingCenterManagement.Infrastructure
                 .HasMany(to => to.Courses)
                 .WithOne(c => c.TrainingOfficer)
                 .HasForeignKey(c => c.TrainingOfficerId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
+
+            // hussien
+
+            ////////////////////////////////////////////////// data Test //////////////////////////////////////////////
+            // data seeding
+            // seeding default product with its brands
+            //modelBuilder.Entity<Product>().HasData(new Product()
+            //{
+            //    Id = 1,
+            //    Name = "Learn how to create console application from scratch"
+            //});
+
+            //modelBuilder.Entity<Brand>().HasData(new Brand()
+            //{
+            //    Id = 1,
+            //    Name = "Microsoft publish",
+            //    Description = "another book created by microsoft",
+            //    ProductId = 1
+            //});
+
+            //modelBuilder.Entity<Brand>().HasData(new Brand()
+            //{
+            //    Id = 2,
+            //    Name = "Amazon publish",
+            //    Description = "another book created by amazon",
+            //    ProductId = 1
+            //});
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
 
             base.OnModelCreating(modelBuilder); 
         }

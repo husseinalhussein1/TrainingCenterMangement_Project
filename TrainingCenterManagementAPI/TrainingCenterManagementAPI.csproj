@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="VeiwModels\" />
+    <Folder Include="Models\Profiles\" />
   </ItemGroup>
 
 </Project>
