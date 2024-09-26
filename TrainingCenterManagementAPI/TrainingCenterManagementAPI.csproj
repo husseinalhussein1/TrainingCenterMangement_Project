@@ -7,22 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="StaticFiles\LectureThumbnails\AngularForBeginners2\**" />
-    <Compile Remove="StaticFiles\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
-    <Compile Remove="StaticFiles\LectureVideos\AngularForBeginners2\**" />
-    <Compile Remove="StaticFiles\LectureVideos\ASP.NETCoreFundamentals1\**" />
-    <Content Remove="StaticFiles\LectureThumbnails\AngularForBeginners2\**" />
-    <Content Remove="StaticFiles\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
-    <Content Remove="StaticFiles\LectureVideos\AngularForBeginners2\**" />
-    <Content Remove="StaticFiles\LectureVideos\ASP.NETCoreFundamentals1\**" />
-    <EmbeddedResource Remove="StaticFiles\LectureThumbnails\AngularForBeginners2\**" />
-    <EmbeddedResource Remove="StaticFiles\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
-    <EmbeddedResource Remove="StaticFiles\LectureVideos\AngularForBeginners2\**" />
-    <EmbeddedResource Remove="StaticFiles\LectureVideos\ASP.NETCoreFundamentals1\**" />
-    <None Remove="StaticFiles\LectureThumbnails\AngularForBeginners2\**" />
-    <None Remove="StaticFiles\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
-    <None Remove="StaticFiles\LectureVideos\AngularForBeginners2\**" />
-    <None Remove="StaticFiles\LectureVideos\ASP.NETCoreFundamentals1\**" />
+    <Compile Remove="StaticFiles\Lectures\LectureThumbnails\AngularForBeginners2\**" />
+    <Compile Remove="StaticFiles\Lectures\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
+    <Compile Remove="StaticFiles\Lectures\LectureVideos\AngularForBeginners2\**" />
+    <Compile Remove="StaticFiles\Lectures\LectureVideos\ASP.NETCoreFundamentals1\**" />
+    <Content Remove="StaticFiles\Lectures\LectureThumbnails\AngularForBeginners2\**" />
+    <Content Remove="StaticFiles\Lectures\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
+    <Content Remove="StaticFiles\Lectures\LectureVideos\AngularForBeginners2\**" />
+    <Content Remove="StaticFiles\Lectures\LectureVideos\ASP.NETCoreFundamentals1\**" />
+    <EmbeddedResource Remove="StaticFiles\Lectures\LectureThumbnails\AngularForBeginners2\**" />
+    <EmbeddedResource Remove="StaticFiles\Lectures\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
+    <EmbeddedResource Remove="StaticFiles\Lectures\LectureVideos\AngularForBeginners2\**" />
+    <EmbeddedResource Remove="StaticFiles\Lectures\LectureVideos\ASP.NETCoreFundamentals1\**" />
+    <None Remove="StaticFiles\Lectures\LectureThumbnails\AngularForBeginners2\**" />
+    <None Remove="StaticFiles\Lectures\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
+    <None Remove="StaticFiles\Lectures\LectureVideos\AngularForBeginners2\**" />
+    <None Remove="StaticFiles\Lectures\LectureVideos\ASP.NETCoreFundamentals1\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +43,8 @@
 
   <ItemGroup>
     <Folder Include="Models\Profiles\" />
+    <Folder Include="StaticFiles\Courses\CoursesThumbnails\" />
+    <Folder Include="StaticFiles\Courses\CoursesVideos\" />
   </ItemGroup>
 
 </Project>

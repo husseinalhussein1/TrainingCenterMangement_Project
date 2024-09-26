@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,11 @@ namespace TrainingCenterManagement.Domain
         public bool IsDeleted { get; set; }
         public required int NumberOfLectures { get; set; }
         public required float Price { get; set; }
-     
+        public string Description { get; set; }
+        [Url]
+        public string VedioUrl { get; set; }
+        [Url]
+        public string ThumbnailUrl { get; set; }
 
         // Foreign Key to TrainingOfficer
         public required Guid TrainingOfficerId { get; set; } 
