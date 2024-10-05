@@ -78,6 +78,8 @@ builder.Services.AddScoped<IReceptionistRepository, ReceptionistRepository>(); /
 builder.Services.AddScoped<ITraineeRepository, TraineeRepository>(); // light weight
 builder.Services.AddScoped<ITrainerRepository, TrainerRepository>(); // light weight
 builder.Services.AddScoped<ITrainingOfficerRepository, TrainingOfficerRepository>(); // light weight
+builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
+
 
 
 

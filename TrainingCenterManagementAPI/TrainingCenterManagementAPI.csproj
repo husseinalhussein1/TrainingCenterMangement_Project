@@ -7,18 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\**" />
     <Compile Remove="StaticFiles\Lectures\LectureThumbnails\AngularForBeginners2\**" />
     <Compile Remove="StaticFiles\Lectures\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
     <Compile Remove="StaticFiles\Lectures\LectureVideos\AngularForBeginners2\**" />
     <Compile Remove="StaticFiles\Lectures\LectureVideos\ASP.NETCoreFundamentals1\**" />
+    <Content Remove="Models\**" />
     <Content Remove="StaticFiles\Lectures\LectureThumbnails\AngularForBeginners2\**" />
     <Content Remove="StaticFiles\Lectures\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
     <Content Remove="StaticFiles\Lectures\LectureVideos\AngularForBeginners2\**" />
     <Content Remove="StaticFiles\Lectures\LectureVideos\ASP.NETCoreFundamentals1\**" />
+    <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="StaticFiles\Lectures\LectureThumbnails\AngularForBeginners2\**" />
     <EmbeddedResource Remove="StaticFiles\Lectures\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
     <EmbeddedResource Remove="StaticFiles\Lectures\LectureVideos\AngularForBeginners2\**" />
     <EmbeddedResource Remove="StaticFiles\Lectures\LectureVideos\ASP.NETCoreFundamentals1\**" />
+    <None Remove="Models\**" />
     <None Remove="StaticFiles\Lectures\LectureThumbnails\AngularForBeginners2\**" />
     <None Remove="StaticFiles\Lectures\LectureThumbnails\ASP.NETCoreFundamentals1\**" />
     <None Remove="StaticFiles\Lectures\LectureVideos\AngularForBeginners2\**" />
@@ -31,6 +35,12 @@
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
@@ -42,7 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Profiles\" />
     <Folder Include="StaticFiles\Courses\CoursesThumbnails\" />
     <Folder Include="StaticFiles\Courses\CoursesVideos\" />
   </ItemGroup>
