@@ -52,6 +52,13 @@ namespace TrainingCenterManagement.Domain
         public ICollection<Payment> Payments { get; set; }
 
 
+
+
+        // Course --> Certificate    one to many
+        public ICollection<Certificate>  Certificates { get; set; }
+
+
+
         public Course()
         {
             Trainees = new List<Trainee>();
@@ -62,6 +69,9 @@ namespace TrainingCenterManagement.Domain
             Lectures = new List<Lecture>();
             Payments = new List<Payment>();
             IsDeleted = false;
+
+
+            Certificates = new List<Certificate>();
         }
     }
 
