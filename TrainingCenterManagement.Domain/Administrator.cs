@@ -11,6 +11,6 @@ namespace TrainingCenterManagement.Domain
 
         // One-to-One Account
         public Account Account { get; set; }
-        public void IssueCertificates(Exam exam) { /* Implementation */ }
+     
     }
 }

@@ -19,11 +19,7 @@ namespace TrainingCenterManagement.Domain
             Courses = new List<Course>();
         }
 
-        public void CourseReview(ICollection<Course> courses) { /*Implementation*/ }
-        public void AttendanceRegistration(Trainee trainee) { /*Implementation*/ }
-        public void AddExam(Course course) { /*Implementation*/ }
-        public void RemoveExam(Course course) { /*Implementation*/ }
-        public bool SendResults(Course course) { /*Implementation*/ return true; }
+    
     }
 
 }

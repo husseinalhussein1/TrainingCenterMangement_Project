@@ -32,12 +32,14 @@ namespace TrainingCenterManagement.Infrastructure
         }
 
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //var connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TrainingCenterManagement_DB";
-            //optionsBuilder.UseSqlServer(connectionString);
+
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("TrainingCenterManagementDBConnectionString"));
             base.OnConfiguring(optionsBuilder);
-        }*/
+        }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
