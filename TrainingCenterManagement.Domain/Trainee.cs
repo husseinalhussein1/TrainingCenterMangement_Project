@@ -26,12 +26,19 @@ namespace TrainingCenterManagement.Domain
         public Account Account { get; set; }
 
 
+        // Trainee --> Certificate    one to many 
+
+        public ICollection<Certificate>?  Certificates { get; set; }
+
+
 
         public Trainee()
         {
             Presences = new List<Presence>();
             Courses = new List<Course>();
             Payments = new List<Payment>();
+
+            Certificates = new List<Certificate>();
             
         }
     }

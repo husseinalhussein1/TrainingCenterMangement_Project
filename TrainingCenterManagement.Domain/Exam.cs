@@ -18,11 +18,19 @@ namespace TrainingCenterManagement.Domain
         public required Guid CourseId { get; set; }
         public Course Course { get; set; }
 
+
+
+        // Exam --> Certificate    one to many
+        public ICollection<Certificate>  Certificates { get; set; }
+
+
         public Exam()
         {
             ExamId = Guid.NewGuid();
             ExamDate=DateTime.UtcNow;
             IsDeleted =false;
+
+            Certificates = new List<Certificate>();
         }
     }
 }
