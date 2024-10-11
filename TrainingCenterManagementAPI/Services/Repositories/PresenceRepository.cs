@@ -16,6 +16,27 @@ namespace TrainingCenterManagementAPI.Services.Repositories
         {
         }
 
+        public async Task<Presence> AddPresenceAsync(Guid lectureId, Guid traineeId)
+        {
+            var presence = new Presence()
+            {
+                IsPresence = true,
+                LectureId = lectureId,
+                TraineeId = traineeId
+            };
+            Add(presence);
+            return presence;
+        }
+
+        public async Task<bool> GetPresenceAsync(Guid lectureId, Guid traineeId)
+        {
+            var presence = All().Where(pr => pr.LectureId == lectureId)
+                                .FirstOrDefault(pr => pr.TraineeId == traineeId);
+            if (presence == null) return false;//لا يمكن ان تكون قيمة البوليان null 
+                                               // لذلك بما انو واحد من الاي ديات غلط فهو غير حاضر 
+            return presence.IsPresence;
+        }
+
 
         // توابع اضافية غير الاساسية
     }

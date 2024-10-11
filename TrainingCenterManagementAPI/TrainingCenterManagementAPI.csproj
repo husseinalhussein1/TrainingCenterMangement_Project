@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="StaticFiles\Courses\CoursesThumbnails\" />
+
     <Folder Include="StaticFiles\Courses\CoursesVideos\" />
   </ItemGroup>
 
