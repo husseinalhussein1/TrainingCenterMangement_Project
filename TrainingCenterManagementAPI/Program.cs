@@ -57,7 +57,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-builder.Services.AddDbContext<TrainingCenterManagementDbContext>(
+/*builder.Services.AddDbContext<TrainingCenterManagementDbContext>(
     options => options.UseSqlServer(builder.Configuration["ConnectionStrings:TrainingCenterManagementDBConnectionString"]),
                                     ServiceLifetime.Scoped);
 //builder.Services.AddDbContext<TrainingCenterManagementDbContext>();
