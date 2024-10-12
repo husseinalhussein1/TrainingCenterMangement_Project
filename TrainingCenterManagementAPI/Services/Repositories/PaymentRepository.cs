@@ -4,7 +4,7 @@
 using TrainingCenterManagement.Domain;
 using TrainingCenterManagement.Infrastructure;
 using TrainingCenterManagementAPI.Interfaces;
-using TrainingCenterManagementAPI.Models.View_HS;
+using TrainingCenterManagementAPI.VeiwModels;
 
 
 namespace TrainingCenterManagementAPI.Services.Repositories

@@ -10,14 +10,9 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using TrainingCenterManagement.Domain;
-using TrainingCenterManagement.Infrastructure;
 using TrainingCenterManagementAPI.Interfaces;
-using TrainingCenterManagementAPI.Models.Basic_HS;
-using TrainingCenterManagementAPI.Models.ForCreate_HS;
-using TrainingCenterManagementAPI.Models.View_HS;
-using ILogger = Serilog.ILogger;
+using TrainingCenterManagementAPI.VeiwModels;
 
 namespace TrainingCenterManagementAPI.Controllers
 {
@@ -32,7 +27,7 @@ namespace TrainingCenterManagementAPI.Controllers
         private readonly IPaymentRepository paymentRepository;
         private readonly ITraineeRepository traineeRepository;
         private readonly IMapper mapper;
-        private readonly ILogger logger;
+        private readonly ILogger<CoursesController> logger;
 
         public CoursesController(
             IConfiguration configuration,
@@ -42,7 +37,7 @@ namespace TrainingCenterManagementAPI.Controllers
             IPaymentRepository paymentRepository,
             ITraineeRepository traineeRepository,
             IMapper mapper,
-            ILogger logger)
+            ILogger<CoursesController> logger)
         {
             this.configuration = configuration;
             this.courseRepository = courseRepository;
@@ -89,6 +84,24 @@ namespace TrainingCenterManagementAPI.Controllers
         public async Task<ActionResult<List<VeiwCourse>>> GetVeiwCourses()
         {
             return Ok(courseRepository.GetVeiwCourses().Result);
+        }
+
+        // GET: api/Courses/veiw/sorting/date
+        [HttpGet("veiw/sorting/date", Name = "GetVeiwCoursesWhithSortingByDate")]   //chick
+        public async Task<ActionResult<List<VeiwCourse>>> GetVeiwCoursesWhithSortingByDate()
+        {
+            return Ok(courseRepository.GetVeiwCourses().Result
+                         .OrderByDescending(course => course.ReleaseDate)   //تم وضعها عكسية لان التاريخ بالمقلوب الاحدث اكبر من الاقدم 
+                         .ToList()); 
+        }
+
+        // GET: api/Courses/veiw/sorting/name
+        [HttpGet("veiw/sorting/name", Name = "GetVeiwCoursesWhithSortingByName")]   //chick
+        public async Task<ActionResult<List<VeiwCourse>>> GetVeiwCoursesWhithSortingByName()
+        {
+            return Ok(courseRepository.GetVeiwCourses().Result
+                         .OrderBy(course => course.CourseName)
+                         .ToList());
         }
 
         // GET: api/Courses/{id}
@@ -550,7 +563,7 @@ namespace TrainingCenterManagementAPI.Controllers
             }
             catch (Exception ex)
             {
-                logger.Error(ex+"");
+                logger.LogError(ex+"");
                 return null;
             }
             return filename;

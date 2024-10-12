@@ -19,7 +19,7 @@ namespace TrainingCenterManagement.Infrastructure
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Receptionist> Receptionists { get; set; }
         public DbSet<TrainingOfficer> TrainingOfficers { get; set; }
-
+        public DbSet<Certificate> Certificates { get; set; }
 
         private readonly IConfiguration configuration;
 
@@ -258,8 +258,8 @@ namespace TrainingCenterManagement.Infrastructure
                 ReleaseDate = DateTime.UtcNow,
                 TrainingOfficerId = trainingOfficer.Id,
                 TrainingOfficer = trainingOfficer,
-                ThumbnailUrl= "~/StaticFiles/Courses/CoursesThumbnails/Asp.net_1_Course.png",
-                VedioUrl= "~/StaticFiles/Courses/CoursesVideos/Asp.net_1_Course.mp4",
+                ThumbnailUrl = "asp.net_1_course.png",
+                VedioUrl = "asp.net_1_course.mp4",
                 Description = "This course provides a comprehensive introduction to ASP.NET Core, a modern web framework for building dynamic and scalable web applications. Students will learn how to create RESTful APIs, implement MVC architecture, and leverage middleware for enhanced functionality. By the end of the course, participants will be equipped with the skills to develop robust applications using best practices and design patterns in ASP.NET Core.",
             };
             //==============================
@@ -274,8 +274,8 @@ namespace TrainingCenterManagement.Infrastructure
                 ReleaseDate = DateTime.UtcNow.AddDays(7),
                 TrainingOfficerId = trainingOfficer.Id,
                 TrainingOfficer = trainingOfficer,
-                ThumbnailUrl= "~/StaticFiles/Courses/CoursesThumbnails/Angular_2_Course.png",
-                VedioUrl = "~/StaticFiles/Courses/CoursesVideos/Angular_2_Course.mp4",
+                ThumbnailUrl = "angular_2_course.png",
+                VedioUrl = "angular_2_course.mp4",
                 Description = "This course offers an in-depth exploration of Angular, a powerful front-end framework for building dynamic web applications. Participants will learn about components, services, and routing, as well as how to manage state and implement responsive designs. By the end of the course, students will have the skills to create maintainable and scalable single-page applications (SPAs) using Angular best practices and tools."
             };
             //==============================
@@ -302,8 +302,8 @@ namespace TrainingCenterManagement.Infrastructure
             {
                 Titel = "Introduction to ASP.NET Core",
                 Description = "Overview of the ASP.NET Core framework",
-                VedioUrl = "~/StaticFiles/Lectures/LectureVideos/ASP.NET_Core_1/ASP.NET_Core_1_Lecture_1.mp4",
-                ThumbnailUrl = "~/StaticFiles/Lectures/LectureThumbnails/ASP.NET_Core_1/ASP.NET_Core_1_Lecture_1.png",
+                VedioUrl = "introduction_to_asp.net_core_lecetuer_asp.net_1.mp4",
+                ThumbnailUrl = "introduction_to_asp.net_core_lecetuer_asp.net_1.png",
                 CourseId = course1.CourseId,
                 Course = course1
             };
@@ -312,9 +312,10 @@ namespace TrainingCenterManagement.Infrastructure
             {
                 Titel = "Angular Basics",
                 Description = "Getting started with Angular",
-                VedioUrl = "~/StaticFiles/Lectures/LectureVideos/Angular_2/Angular_2_Lecture_1.mp4",
-                ThumbnailUrl = "~/StaticFiles/Lectures/LectureThumbnails/Angular_2/Angular_2_Lecture_1.png",
-                Course = course2
+                VedioUrl = "angularbasics_leceture_angular_2.mp4",
+                ThumbnailUrl = "angularbasics_leceture_angular_2.png",
+                CourseId = course2.CourseId,
+                Course = course2,
             };
 
             course1.Lectures.Add(lecture1);
@@ -436,15 +437,34 @@ namespace TrainingCenterManagement.Infrastructure
 
             //==============================
 
+
+            //Exam
+            var exam1 = new Exam()
+            {
+                CourseId = course1.CourseId,
+                ExamName = "asp",
+                ExamDate = DateTime.Parse("2024-11-11")
+            };
+
+            var exam2 = new Exam()
+            {
+                CourseId = course2.CourseId,
+                ExamName = "angular",
+                ExamDate = DateTime.Parse("2024-10-11")
+            };
+            course1.Exam = exam1;
+            course2.Exam = exam2;
+
             // Adding to context
             context.Trainees.AddRange(trainee1, trainee2, trainee3, trainee4);
             context.Trainers.Add(trainer);
             context.TrainingOfficers.Add(trainingOfficer);
             context.Administrators.Add(admin);
+            context.Exams.AddRange(exam1, exam2);
             context.Courses.AddRange(course1, course2);
             context.Lectures.AddRange(lecture1, lecture2);
             context.Presences.AddRange(presence1, presence2);
-            context.Payments.AddRange(payment1, payment2,payment3,payment4,payment5,payment6,payment7,payment8);
+            context.Payments.AddRange(payment1, payment2, payment3, payment4, payment5, payment6, payment7, payment8);
 
             //==============================
 

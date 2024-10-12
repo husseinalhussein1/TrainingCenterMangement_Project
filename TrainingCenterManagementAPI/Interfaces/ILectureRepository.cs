@@ -1,8 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.JsonPatch;
 using TrainingCenterManagement.Domain;
-using TrainingCenterManagementAPI.Models.Basic_HS;
-using TrainingCenterManagementAPI.Models.View_HS;
+using TrainingCenterManagementAPI.VeiwModels;
 
 namespace TrainingCenterManagementAPI.Interfaces
 {

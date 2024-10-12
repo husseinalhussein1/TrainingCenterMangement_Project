@@ -11,8 +11,7 @@ using NuGet.Protocol.Core.Types;
 using TrainingCenterManagement.Domain;
 using TrainingCenterManagement.Infrastructure;
 using TrainingCenterManagementAPI.Interfaces;
-using TrainingCenterManagementAPI.Models.Basic_HS;
-using TrainingCenterManagementAPI.Models.View_HS;
+using TrainingCenterManagementAPI.VeiwModels;
 using TrainingCenterManagementAPI.Services.Repositories;
 
 namespace TrainingCenterManagementAPI.Controllers

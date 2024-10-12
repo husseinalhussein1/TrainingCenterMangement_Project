@@ -8,6 +8,7 @@ using TrainingCenterManagement.Infrastructure;
 using TrainingCenterManagementAPI.Interfaces;
 using TrainingCenterManagementAPI.Services.Repositories;
 using Microsoft.Extensions.FileProviders;//for static file
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,10 @@ builder.Services.AddControllers(option =>
     option.ReturnHttpNotAcceptable = true;
 })
     .AddXmlDataContractSerializerFormatters()
-    .AddNewtonsoftJson();
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;//مشان ما يصير سلاسل غير منتهية
+    });
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -57,7 +61,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-/*builder.Services.AddDbContext<TrainingCenterManagementDbContext>(
+builder.Services.AddDbContext<TrainingCenterManagementDbContext>(
     options => options.UseSqlServer(builder.Configuration["ConnectionStrings:TrainingCenterManagementDBConnectionString"]),
                                     ServiceLifetime.Scoped);
 //builder.Services.AddDbContext<TrainingCenterManagementDbContext>();

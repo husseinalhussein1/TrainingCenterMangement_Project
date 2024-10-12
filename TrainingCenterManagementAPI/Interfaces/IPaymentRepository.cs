@@ -1,6 +1,6 @@
 ﻿
 using TrainingCenterManagement.Domain;
-using TrainingCenterManagementAPI.Models.View_HS;
+using TrainingCenterManagementAPI.VeiwModels;
 
 namespace TrainingCenterManagementAPI.Interfaces
 {
