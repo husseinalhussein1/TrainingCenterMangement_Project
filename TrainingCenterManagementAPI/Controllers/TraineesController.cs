@@ -7,6 +7,7 @@ using TrainingCenterManagementAPI.Interfaces;
 using TrainingCenterManagementAPI.ViewModels;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrainingCenterManagementAPI.Controllers
 {
@@ -29,6 +30,9 @@ namespace TrainingCenterManagementAPI.Controllers
             _logger = logger;
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer,Receptionist")]
         // GET: api/trainees
         [HttpGet(Name = "GetTrainees")]
         public async Task<ActionResult<List<TraineeViewModel>>> GetTrainees(int pageNumber = 1, int pageSize = 5, string? keyword = null)
@@ -48,6 +52,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(traineeViewModels);
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer,Receptionist")]
         // GET: api/trainees/{id}
         [HttpGet("{id}", Name = "GetTraineeById")]
         public async Task<ActionResult<TraineeViewModel>> GetTraineeById(Guid id)
@@ -63,6 +70,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(traineeViewModel);
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer,Receptionist")]
         // POST: api/trainees
         [HttpPost]
         public async Task<ActionResult<Trainee>> CreateTrainee([FromBody] TraineeCreateModel traineeCreateModel)
@@ -78,6 +88,12 @@ namespace TrainingCenterManagementAPI.Controllers
             return CreatedAtRoute("GetTraineeById", new { id = newTrainee.Id }, newTrainee);
         }
 
+
+
+
+
+
+        [Authorize(Roles = "TrainingOfficer,Receptionist")]
         // PUT: api/trainees/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTrainee(Guid id, [FromBody] TraineeUpdateModel traineeUpdateModel)
@@ -95,6 +111,10 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+
+        [Authorize(Roles = "TrainingOfficer,Receptionist")]
         // PATCH: api/trainees/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartiallyUpdateTrainee(Guid id, [FromBody] JsonPatchDocument<TraineeUpdateModel> patchDocument)
@@ -120,6 +140,10 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+
+        [Authorize(Roles = "TrainingOfficer,Receptionist")]
         // DELETE: api/trainees/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTrainee(Guid id)

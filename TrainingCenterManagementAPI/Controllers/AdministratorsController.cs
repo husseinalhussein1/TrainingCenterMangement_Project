@@ -7,6 +7,7 @@ using TrainingCenterManagementAPI.Interfaces;
 using TrainingCenterManagementAPI.ViewModels;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrainingCenterManagementAPI.Controllers
 {
@@ -29,6 +30,8 @@ namespace TrainingCenterManagementAPI.Controllers
             _logger = logger;
         }
 
+
+        
         // GET: api/administrators
         [HttpGet(Name = "GetAdministrators")]
         public async Task<ActionResult<List<AdministratorViewModel>>> GetAdministrators(int pageNumber = 1, int pageSize = 5, string? keyword = null)
@@ -49,6 +52,7 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(administratorViewModels);
         }
 
+        [AllowAnonymous]
         // GET: api/administrators/{id}
         [HttpGet("{id}", Name = "GetAdministratorById")]
         public async Task<ActionResult<AdministratorViewModel>> GetAdministratorById(Guid id)
@@ -64,6 +68,10 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(administratorViewModel);
         }
 
+
+
+
+        [AllowAnonymous]
         // POST: api/administrators
         [HttpPost]
         public async Task<ActionResult<Administrator>> CreateAdministrator([FromBody] AdministratorCreateModel adminCreateModel)
@@ -79,6 +87,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return CreatedAtRoute("GetAdministratorById", new { id = newAdministrator.Id }, newAdministrator);
         }
 
+
+        [AllowAnonymous]
         // PUT: api/administrators/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAdministrator(Guid id, [FromBody] AdministratorUpdateModel adminUpdateModel)
@@ -96,6 +106,7 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
         // PATCH: api/administrators/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartiallyUpdateAdministrator(Guid id, [FromBody] JsonPatchDocument<AdministratorUpdateModel> patchDocument)
@@ -121,6 +132,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+        [AllowAnonymous]
         // DELETE: api/administrators/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAdministrator(Guid id)

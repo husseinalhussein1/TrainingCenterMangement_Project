@@ -23,7 +23,7 @@ namespace TrainingCenterManagementAPI.Services.Repositories
 
         public T Add(T entity)
         {
-            var NewEntity=context.Add(entity);
+            var NewEntity = context.Add(entity);
             return NewEntity.Entity;
         }
 
@@ -51,7 +51,7 @@ namespace TrainingCenterManagementAPI.Services.Repositories
 
         public void Delete(T entity)
         {
- 
+
             context.Entry(entity).Property("IsDelete").CurrentValue = true;
             context.Update(entity);
         }
@@ -69,7 +69,7 @@ namespace TrainingCenterManagementAPI.Services.Repositories
             // Find the key property that ends with 'Id'
             var keyProperty = typeof(T).GetProperties()
                                        .FirstOrDefault(p => p.Name.EndsWith("Id",
-                                                                            StringComparison.OrdinalIgnoreCase) 
+                                                                            StringComparison.OrdinalIgnoreCase)
                                                         && p.PropertyType == typeof(Guid));
 
             if (keyProperty == null)
@@ -81,7 +81,7 @@ namespace TrainingCenterManagementAPI.Services.Repositories
 
             // Build a dynamic condition for the key
             var parameter = Expression.Parameter(typeof(T), "e");
-            var property  = Expression.Property(parameter, keyName);
+            var property = Expression.Property(parameter, keyName);
             var condition = Expression.Equal(property, Expression.Constant(id));
 
             var lambda = Expression.Lambda<Func<T, bool>>(condition, parameter);
@@ -102,6 +102,6 @@ namespace TrainingCenterManagementAPI.Services.Repositories
         }
 
 
-        
+
     }
 }

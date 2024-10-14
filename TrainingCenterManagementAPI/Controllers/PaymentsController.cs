@@ -23,6 +23,8 @@ namespace TrainingCenterManagementAPI.Controllers
             this.paymentRepository = paymentRepository;
         }
 
+
+        [Authorize(Roles = "Receptionist")]
         // GET: api/Payments
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Payment>>> GetPayments()
@@ -30,6 +32,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(paymentRepository.All().ToList());
         }
 
+
+        [Authorize(Roles = "Receptionist")]
         // GET: api/Payments/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Payment>> GetPayment(Guid id)
@@ -44,6 +48,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(payment);
         }
 
+
+
+        [Authorize(Roles = "Receptionist")]
         // PUT: api/Payments/5
         [HttpPut("{id}/total/{totalAmount}")]
         //[Authorize]

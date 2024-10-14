@@ -17,11 +17,14 @@ namespace TrainingCenterManagement.Domain
         [EmailAddress]
         public string Email { get; set; }
         public bool IsRemember { get; set; }
+        public bool IsDeleted { get; set; }
+
 
         public Account()
         {
             if(Id!=Guid.Empty)
-            Id = Guid.NewGuid();    
+            Id = Guid.NewGuid(); 
+            IsDeleted = false;
         }
 
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingCenterManagement.Infrastructure;
 
@@ -11,9 +12,11 @@ using TrainingCenterManagement.Infrastructure;
 namespace TrainingCenterManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(TrainingCenterManagementDbContext))]
-    partial class TrainingCenterManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241014154135_Add_isDelete_in_model")]
+    partial class Add_isDelete_in_model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

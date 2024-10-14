@@ -18,7 +18,15 @@ namespace TrainingCenterManagement.Domain
         // Foreign Key to Lecture
         public required Guid LectureId { get; set; }
         public Lecture Lecture { get; set; }
-        
-        
+
+        public bool IsDeleted { get; set; }
+
+
+        public Presence()
+        {
+            IsDeleted = false;
+        }
+
+
     }
 }

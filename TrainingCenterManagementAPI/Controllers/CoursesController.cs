@@ -49,7 +49,7 @@ namespace TrainingCenterManagementAPI.Controllers
             this.logger = logger;
         }
 
-        
+
         /////////////////////////////////////////////////////////////
         /// 
         ///  لازم ما انسى اعمل :::::
@@ -65,20 +65,22 @@ namespace TrainingCenterManagementAPI.Controllers
         ///  لالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالالا تنسى تتست اهم شي
         /// 
 
-        
-        // GET: api/Courses
-        [HttpGet(Name = "GetCourses")]  //chick
-        public async Task<ActionResult<List<Course>>> GetCourses()
-        {
-            return Ok(courseRepository.All(co => co.Trainees,
-                                           co => co.Payments,
-                                           co => co.Presences,
-                                           co => co.Exam,
-                                           co => co.TrainingOfficer,
-                                           co => co.Trainers,
-                                           co => co.Lectures));
-        }
+        //[AllowAnonymous]
+        //// GET: api/Courses
+        //[HttpGet(Name = "GetCourses")]  //chick
+        //public async Task<ActionResult<List<Course>>> GetCourses()
+        //{
+        //    return Ok(courseRepository.All(co => co.Trainees,
+        //                                   co => co.Payments,
+        //                                   co => co.Presences,
+        //                                   co => co.Exam,
+        //                                   co => co.TrainingOfficer,
+        //                                   co => co.Trainers,
+        //                                   co => co.Lectures));
+        //}
 
+
+        [AllowAnonymous]
         // GET: api/Courses/veiw
         [HttpGet("veiw", Name = "GetVeiwCourses")]   //chick
         public async Task<ActionResult<List<VeiwCourse>>> GetVeiwCourses()
@@ -86,6 +88,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(courseRepository.GetVeiwCourses().Result);
         }
 
+
+
+        [AllowAnonymous]
         // GET: api/Courses/veiw/sorting/date
         [HttpGet("veiw/sorting/date", Name = "GetVeiwCoursesWhithSortingByDate")]   //chick
         public async Task<ActionResult<List<VeiwCourse>>> GetVeiwCoursesWhithSortingByDate()
@@ -95,6 +100,9 @@ namespace TrainingCenterManagementAPI.Controllers
                          .ToList()); 
         }
 
+
+
+        [AllowAnonymous]
         // GET: api/Courses/veiw/sorting/name
         [HttpGet("veiw/sorting/name", Name = "GetVeiwCoursesWhithSortingByName")]   //chick
         public async Task<ActionResult<List<VeiwCourse>>> GetVeiwCoursesWhithSortingByName()
@@ -104,6 +112,9 @@ namespace TrainingCenterManagementAPI.Controllers
                          .ToList());
         }
 
+
+
+       /* [AllowAnonymous]
         // GET: api/Courses/{id}
         [HttpGet("{id}", Name = "GetCourseById")]   //chick
         public async Task<ActionResult<Course>> GetCourseById(Guid id)
@@ -117,8 +128,11 @@ namespace TrainingCenterManagementAPI.Controllers
                                                     co => co.Lectures);
             if (course == null) NotFound();
             return Ok(course);
-        }
+        }*/
 
+
+
+        [AllowAnonymous]
         // GET: api/Courses/veiw/{id}
         [HttpGet("veiw/{id}", Name = "GetVeiwCourseById")]     //chick
         public async Task<ActionResult<VeiwCourse>>? GetVeiwCourseById(Guid id)
@@ -128,6 +142,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(course.Result);
         }
 
+
+
+        [AllowAnonymous]
         // GET: api/Courses/basic/{name}
         [HttpGet("basic/{name}", Name = "GetBasicCourseByName")]   //chick
         public async Task<ActionResult<BasicCourse>> GetBasicCourseByName(string? name)
@@ -139,9 +156,11 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(course.Result);
         }
 
+
+        [AllowAnonymous]
         // POST: api/Courses
         [HttpPost(Name = "PostCourse")]   //chick
-        //[Authorize]
+        
         public async Task<ActionResult<Course>> PostCourse(CourseForCreate courseForCreate)
         {
             var basicCourse = new BasicCourse()
@@ -180,9 +199,14 @@ namespace TrainingCenterManagementAPI.Controllers
             return CreatedAtAction("GetCourseById", new { id = course.Result.CourseId }, course.Result);
         }
 
+
+
+
+
+        [AllowAnonymous]
         // PUT: api/Courses/{id}
         [HttpPut("{id}", Name = "PutCourse")]   //chick
-        //[Authorize]
+        
         public async Task<IActionResult> PutCourse(Guid id, VeiwCourse viwCourse)
         {
             var course = courseRepository.UpdateCourseAsync(id, viwCourse);
@@ -192,9 +216,12 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+        [AllowAnonymous]
         // PATCH: api/Courses/{id}
         [HttpPatch("{id}", Name = "PartiallyUpdateCourse")]   //chick
-        //[Authorize]
+        
         public async Task<ActionResult<Course>> PartiallyUpdateCourse(Guid id, JsonPatchDocument<VeiwCourse> veiwCourse)
         {
             var course = courseRepository.GetVeiwCourse(id);
@@ -210,9 +237,14 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+
+
+        [AllowAnonymous]
         // DELETE: api/Courses/{id}
         [HttpDelete("{id}", Name = "DeleteCourse")]    //chick
-        //[Authorize]
+        
         public async Task<IActionResult> DeleteCourse(Guid id)
         {
             var course = courseRepository.DeleteAsync(id);
@@ -228,6 +260,8 @@ namespace TrainingCenterManagementAPI.Controllers
         ///   EXAM
         ///
 
+
+        [AllowAnonymous]
         // GET: api/Course/{id}/exam
         [HttpGet("{id}/exam", Name = "GetExamByCourseId")]  //chick
         public async Task<ActionResult<VeiwExam>> GetExamByCourseId(Guid id)
@@ -237,9 +271,15 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(exam.Result);
         }
 
+
+
+
+
+
+        [Authorize(Roles = "TrainingOfficer")]
         // POST: api/Course/{id}/exam
         [HttpPost("{id}/exam", Name = "CreateExamByCourseId")]  //chick
-        //[Authorize]
+        
         public async Task<ActionResult<Course>> PostExam(Guid id, VeiwExam veiwExam)
         {
             var exam = courseRepository.CreateExamAsync(id, veiwExam);
@@ -250,9 +290,13 @@ namespace TrainingCenterManagementAPI.Controllers
             return CreatedAtAction("GetExamByCourseId", new { id = exam.Result.CourseId }, exam.Result);
         }
 
+
+
+
+        [Authorize(Roles = "TrainingOfficer")]
         // PUT: api/Courses/{id}/exam
         [HttpPut("{id}/exam", Name = "UpdateExamByCourseId")]   //chick
-        //[Authorize]
+        
         public async Task<IActionResult> PutExamByCourseId(Guid id, VeiwExam veiwExam)
         {
             var exam = courseRepository.UpdateExamByCourseIdAsync(id, veiwExam);
@@ -264,9 +308,13 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+
+        [Authorize(Roles = "TrainingOfficer")]
         // PATCH: api/Courses/{id}/exam
         [HttpPatch("{id}/exam", Name = "PartiallyUpdateExamByCourseId")]   //chick
-        //[Authorize]
+        
         public async Task<ActionResult<BasicExam>> PartiallyUpdateExamByCourseImdAsync(Guid? id, JsonPatchDocument<VeiwExam> veiwExam)
         {
             var exam = courseRepository.GetExamAsync(id);
@@ -291,6 +339,9 @@ namespace TrainingCenterManagementAPI.Controllers
         ///   LECETUERS
         ///
 
+
+
+        [Authorize(Roles = "TrainingOfficer,Trainee,Trainer")]
         // GET: api/Course/{id}/lecetuers
         [HttpGet("{id}/lecetuers", Name = "AllLecetuersByCourseId")]   //chick
         public async Task<ActionResult<List<BasicLecture>>> GetLecetuers(Guid id)
@@ -300,6 +351,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(lecetuers);
         }
 
+
+        [Authorize(Roles = "TrainingOfficer,Trainee,Trainer")]
         // GET: api/Course/{id}/lecetuers/{name}
         [HttpGet("{id}/lectures/{name}", Name = "GetLectureByCourseIdAndName")]  //chick
         public async Task<IActionResult> GetLectureByCourseIdAndName(Guid id, string name)
@@ -309,9 +362,12 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(lecetuer.Result);
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer,Trainer")]
         // POST: api/Course/{id}/exam
         [HttpPost("{id}/lecetuers", Name = "CreateLecetuerByCourseId")]   //chick
-        //[Authorize]
+        
         public async Task<ActionResult<BasicLecture>> Postlecetuer(Guid id, LectuerForCreate lectuerForCreate)
         {
             var veiwLecture = new VeiwLecture()
@@ -354,7 +410,7 @@ namespace TrainingCenterManagementAPI.Controllers
                                     lecetuerForReturn);
         }
 
-        
+
 
         ///////////////////////
         ///
@@ -362,6 +418,8 @@ namespace TrainingCenterManagementAPI.Controllers
         ///
 
 
+
+        [Authorize(Roles = "Receptionist,Trainee")]
         // GET: api/Course/{id}/trainees/{traineeId}/payments
         [HttpGet("{id}/trainees/{traineeId}/payments", Name = "GetAllPaymentsForTraineeAndCourse")]   //chick
         public async Task<ActionResult<List<Payment>>> GetAllPaymentsForTraineeAndCourse(Guid id, Guid traineeId)
@@ -372,6 +430,8 @@ namespace TrainingCenterManagementAPI.Controllers
         }
 
 
+
+        [Authorize(Roles = "Receptionist,Trainee")]
         // GET: api/Course/{id}/trainees/{traineeId}/totalAmount
         [HttpGet("{id}/trainees/{traineeId}/totalAmount", Name = "GetTotalAmountForAllPaymentsForTraineeAndCourse")]    //chick
         public async Task<ActionResult<Decimal>> GetTotalAmountForAllPaymentsForTraineeAndCourse(Guid id, Guid tId)
@@ -381,11 +441,11 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(payments.Result);
         }
 
-
+        [Authorize(Roles = "Receptionist")]
         // POST: api/Course/{id}/trainees/{traineeId}/payments
         [HttpPost("{id}/trainees/{traineeId}/payments", Name = "AddPaymentForTraineeAndCourse")]   //chick
-        //[Authorize]
-        public async Task<ActionResult<Course>> PostPayment(Guid id, Guid traineeId, VeiwPayment veiwPayment)
+        
+        public async Task<ActionResult<Payment>> PostPayment(Guid id, Guid traineeId, VeiwPayment veiwPayment)
         {
             var payment = paymentRepository.CreateAsync(id,traineeId,veiwPayment);
             if (payment.Result is null) NotFound();
@@ -406,11 +466,16 @@ namespace TrainingCenterManagementAPI.Controllers
 
 
 
+
+
         ///////////////////////////////////////////////////////////////////////////////     //chick
         ///
         ///          static files
         ///          
 
+
+
+        [AllowAnonymous]
         // GET: api/Courses/{name}/video
         [HttpGet("{videoCoursename}/video", Name = "videoCourse")]
         public async Task<ActionResult> GetVideoCourses(string videoCoursename)
@@ -419,6 +484,7 @@ namespace TrainingCenterManagementAPI.Controllers
             return await GetFile($"StaticFiles/Courses/CoursesVideos{videoCoursename}");
         }
 
+        [AllowAnonymous]
         // GET: api/Courses/img
         [HttpGet("{imgCoursename}/img", Name = "imgCourse")]
         public async Task<ActionResult> GetImgCourses(string imgCoursename)
@@ -426,13 +492,19 @@ namespace TrainingCenterManagementAPI.Controllers
             return await GetFile($"StaticFiles/Courses/CoursesThumbnails{imgCoursename}");
         }
         
-        // GET: api/Courses/{name}/video
+
+
+        [AllowAnonymous]
+        
         [HttpGet("{id}/leceture/{videoCoursename}/video", Name = "videoLecetuer")]
         public async Task<ActionResult> GetVideoLeceture(string videoCoursename)
         {
             return await GetFile($"StaticFiles/Lectures/LectureVideos{videoCoursename}");
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer,Trainee,Trainer")]
         // GET: api/Courses/img
         [HttpGet("{id}/leceture/{imgCoursename}/img", Name = "imgLecetuer")]
         public async Task<ActionResult> GetImgLeceture(string imgCoursename)
@@ -440,9 +512,12 @@ namespace TrainingCenterManagementAPI.Controllers
             return await GetFile($"StaticFiles/Lectures/LectureThumbnails{imgCoursename}");
         }
 
+
+
+        [AllowAnonymous]
         // PUT: api/Courses/{id}/video
         [HttpPut("{id}/video")]
-        //[Authorize]
+        
         public async Task<IActionResult> UpdateVideoCourses(Guid id, IFormFile file)
         {
             var course = courseRepository.GeT(id);
@@ -457,9 +532,12 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(result);
         }
 
+
+
+        [AllowAnonymous]
         // PUT: api/Courses/{id}/img
         [HttpPut("{id}/img")]
-        //[Authorize]
+        
         public async Task<IActionResult> UpdateimgCourses(Guid id, IFormFile file)
         {
             var course = courseRepository.GeT(id);
@@ -474,9 +552,11 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(result);
         }
 
+
+        [Authorize(Roles = "TrainingOfficer,Trainer")]
         // PUT: api/Courses/video/{id}
         [HttpPut("{id}/leceture/{titel}/video")]
-        //[Authorize]
+        
         public async Task<IActionResult> UpdateVideoLeceture(Guid id,string titel, IFormFile file)
         {
             var course = courseRepository.GeT(id, e => e.Lectures);
@@ -492,9 +572,11 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(result);
         }
 
+
+        [Authorize(Roles = "TrainingOfficer,Trainer")]
         // PUT: api/Courses/img/{id}
         [HttpPut("{id}/leceture/{titel}/img")]
-        //[Authorize]
+        
         public async Task<IActionResult> UpdateimgLeceture(Guid id , string titel , IFormFile file)
         {
             var course = courseRepository.GeT(id, e => e.Lectures);

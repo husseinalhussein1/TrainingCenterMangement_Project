@@ -33,6 +33,8 @@ namespace TrainingCenterManagementAPI.Controllers
             this.traineeRepository = traineeRepository;
         }
 
+
+        [Authorize(Roles = "TrainingOfficer")]
         // GET: api/Lectures
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lecture>>> GetLectures()
@@ -40,6 +42,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(lectureRepository.All());
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer,Trainee,Trainer")]
         // GET: api/Lectures/{id}
         [HttpGet("{id}",Name = "GetLectureById")]
         public async Task<ActionResult<Lecture>> GetLecture(Guid id)
@@ -54,6 +59,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return lecture;
         }
 
+
+        [Authorize(Roles = "TrainingOfficer,Trainer")]
         // PUT: api/Lectures/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLecture(Guid id, VeiwLectureWithoutUrls veiwLecture)
@@ -64,6 +71,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+        [Authorize(Roles = "TrainingOfficer,Trainer")]
         // PATCH: api/Lectur")]
         [HttpPatch("{id}",Name = "PartiallyLectureUpdate")]
         //[Authorize]
@@ -81,6 +90,10 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+
+        [Authorize(Roles = "TrainingOfficer,Trainer")]
         // DELETE: api/Lectures/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLecture(Guid id)
@@ -100,6 +113,9 @@ namespace TrainingCenterManagementAPI.Controllers
         ///    Presence
         /// 
 
+
+
+        [Authorize(Roles = "TrainingOfficer")]
         [HttpPost("{id}/trainee/{traineeId}/presence", Name = "CreatePresenceByLucetureIdAndTraineeId")]
         public async Task<ActionResult<Presence>> CreatePresenceByLucetureIdAndTraineeId(Guid id, Guid traineeId)
         {
@@ -126,12 +142,15 @@ namespace TrainingCenterManagementAPI.Controllers
                                     presence.Result);
         }
 
-        [HttpGet("{id}/trainee/{traineeId}/presence", Name = "GetPresenceByLucetureIdAndTraineeId")]
-        public async Task<ActionResult<Course>> GetPresenceByLucetureIdAndTraineeId(Guid id, Guid traineeId)
-        {
-            var exam = presenceRepository.GetPresenceAsync(id, traineeId);
-            return Ok(exam.Result);
-        }
+
+
+        // alter last
+        //[HttpGet("{id}/trainee/{traineeId}/presence", Name = "GetPresenceByLucetureIdAndTraineeId")]
+        //public async Task<ActionResult<Course>> GetPresenceByLucetureIdAndTraineeId(Guid id, Guid traineeId)
+        //{
+        //    var exam = presenceRepository.GetPresenceAsync(id, traineeId);
+        //    return Ok(exam.Result);
+        //}
 
 
     }

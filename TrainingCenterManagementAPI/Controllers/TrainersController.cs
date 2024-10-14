@@ -7,11 +7,13 @@ using TrainingCenterManagementAPI.Interfaces;
 using TrainingCenterManagementAPI.ViewModels;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrainingCenterManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class TrainersController : ControllerBase
     {
         private readonly ITrainerRepository _trainerRepository;
@@ -29,6 +31,8 @@ namespace TrainingCenterManagementAPI.Controllers
             _logger = logger;
         }
 
+
+        [AllowAnonymous]
         // GET: api/trainers
         [HttpGet(Name = "GetTrainers")]
         public async Task<ActionResult<List<TrainerViewModel>>> GetTrainers(int pageNumber = 1, int pageSize = 5, string? keyword = null)
@@ -48,6 +52,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(trainerViewModels);
         }
 
+
+        [AllowAnonymous]
         // GET: api/trainers/{id}
         [HttpGet("{id}", Name = "GetTrainerById")]
         public async Task<ActionResult<TrainerViewModel>> GetTrainerById(Guid id)
@@ -63,6 +69,10 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(trainerViewModel);
         }
 
+
+
+
+        [AllowAnonymous]
         // POST: api/trainers
         [HttpPost]
         public async Task<ActionResult<Trainer>> CreateTrainer([FromBody] TrainerCreateModel trainerCreateModel)
@@ -78,6 +88,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return CreatedAtRoute("GetTrainerById", new { id = newTrainer.Id }, newTrainer);
         }
 
+
+
+        [AllowAnonymous]
         // PUT: api/trainers/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTrainer(Guid id, [FromBody] TrainerUpdateModel trainerUpdateModel)
@@ -95,6 +108,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+        [AllowAnonymous]
         // PATCH: api/trainers/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartiallyUpdateTrainer(Guid id, [FromBody] JsonPatchDocument<TrainerUpdateModel> patchDocument)
@@ -120,6 +136,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+        [AllowAnonymous]
         // DELETE: api/trainers/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTrainer(Guid id)

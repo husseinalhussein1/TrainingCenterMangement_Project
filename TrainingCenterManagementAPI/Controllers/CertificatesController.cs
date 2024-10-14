@@ -7,6 +7,7 @@ using TrainingCenterManagementAPI.Interfaces;
 using TrainingCenterManagementAPI.ViewModels;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrainingCenterManagementAPI.Controllers
 {
@@ -28,7 +29,7 @@ namespace TrainingCenterManagementAPI.Controllers
             _mapper = mapper;
             _logger = logger;
         }
-        
+        [AllowAnonymous]
         // GET: api/certificates
         [HttpGet(Name = "GetCertificates")]
         public async Task<ActionResult<List<CertificateViewModel>>> GetCertificates(int pageNumber = 1, int pageSize = 5, string? keyword = null)
@@ -48,6 +49,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(certificateViewModels);
         }
 
+
+        [AllowAnonymous]
         // GET: api/certificates/{id}
         [HttpGet("{id}", Name = "GetCertificateById")]
         public async Task<ActionResult<CertificateViewModel>> GetCertificateById(Guid id)
@@ -63,6 +66,10 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(certificateViewModel);
         }
 
+
+
+
+        [AllowAnonymous]
         // POST: api/certificates
         [HttpPost]
         public async Task<ActionResult<Certificate>> CreateCertificate([FromBody] CertificateCreateModel certificateCreateModel)
@@ -78,6 +85,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return CreatedAtRoute("GetCertificateById", new { id = newCertificate.Id }, newCertificate);
         }
 
+
+
+        [AllowAnonymous]
         // PUT: api/certificates/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCertificate(Guid id, [FromBody] CertificateUpdateModel certificateUpdateModel)
@@ -95,6 +105,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+        [AllowAnonymous]
         // PATCH: api/certificates/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartiallyUpdateCertificate(Guid id, [FromBody] JsonPatchDocument<CertificateUpdateModel> patchDocument)
@@ -120,6 +133,10 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+
+        [AllowAnonymous]
         // DELETE: api/certificates/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCertificate(Guid id)

@@ -27,6 +27,8 @@ namespace TrainingCenterManagementAPI.Controllers
             this.examRepository = examRepository;
         }
 
+
+        [Authorize(Roles = "TrainingOfficer")]
         // GET: api/Exams
         [HttpGet(Name = "GetExams")]
         public async Task<ActionResult<IEnumerable<Exam>>> GetExams()
@@ -34,6 +36,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(examRepository.All());
         }
 
+
+        [Authorize(Roles = "TrainingOfficer")]
         // GET: api/Exams/5
         [HttpGet("{id}", Name = "GetExamById")]
         public async Task<ActionResult<Exam>> GetExamById(Guid id)
@@ -48,6 +52,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return exam;
         }
 
+
+        [Authorize(Roles = "TrainingOfficer")]
         // PUT: api/Exams/5
         [HttpPut("{id}",Name = "PutExam")]
         //[Authorize]
@@ -59,6 +65,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer")]
         // PATCH: api/Exams/{id}
         [HttpPatch("{id}", Name = "PartiallyUpdateExam")]
         //[Authorize]
@@ -77,6 +86,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer")]
         // DELETE: api/Exams/5
         [HttpDelete("{id}",Name = "DeleteExam")]
         //[Authorize]

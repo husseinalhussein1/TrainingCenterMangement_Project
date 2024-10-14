@@ -22,6 +22,9 @@ namespace TrainingCenterManagementAPI.Controllers
             this.presenceRepository = presenceRepository;
         }
 
+
+
+        [Authorize(Roles = "TrainingOfficer")]
         // GET: api/Presences
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Presence>>> GetPresences()

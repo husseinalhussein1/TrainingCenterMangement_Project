@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -67,7 +68,7 @@ namespace TrainingCenterManagementAPI.Controllers
         {
             if (userAccount.Administrator != null)
             {
-                return "Admin";
+                return "Administrator";
             }
             else if (userAccount.TrainingOfficer != null)
             {
@@ -77,7 +78,26 @@ namespace TrainingCenterManagementAPI.Controllers
             {
                 return "Receptionist";
             }
-            return "User"; // إذا لم يكن له أي دور محدد
+            else if (userAccount.Trainer != null)
+            {
+                return "Trainer";
+            }
+
+            else if (userAccount.Trainee != null)
+            {
+                return "Trainee";
+            }
+            return "UnUser"; // إذا لم يكن له أي دور محدد
         }
     }
 }
+
+// Administrator,TrainingOfficer,Receptionist,Trainer,Trainee
+
+//[AllowAnonymous]
+//[Authorize(Roles = "TrainingOfficer")]
+//[Authorize(Roles = "Receptionist")]
+//[Authorize(Roles = "Trainer")]
+//[Authorize(Roles = "Trainee")]
+//[AllowAnonymous]
+

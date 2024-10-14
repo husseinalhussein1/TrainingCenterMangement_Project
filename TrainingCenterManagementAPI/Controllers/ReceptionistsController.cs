@@ -7,6 +7,7 @@ using TrainingCenterManagementAPI.Interfaces;
 using TrainingCenterManagementAPI.ViewModels;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrainingCenterManagementAPI.Controllers
 {
@@ -29,6 +30,9 @@ namespace TrainingCenterManagementAPI.Controllers
             _logger = logger;
         }
 
+
+
+        [AllowAnonymous]
         // GET: api/receptionists
         [HttpGet(Name = "GetReceptionists")]
         public async Task<ActionResult<List<ReceptionistViewModel>>> GetReceptionists(int pageNumber = 1, int pageSize = 5, string? keyword = null)
@@ -48,6 +52,8 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(receptionistViewModels);
         }
 
+
+        [AllowAnonymous]
         // GET: api/receptionists/{id}
         [HttpGet("{id}", Name = "GetReceptionistById")]
         public async Task<ActionResult<ReceptionistViewModel>> GetReceptionistById(Guid id)
@@ -63,6 +69,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return Ok(receptionistViewModel);
         }
 
+
+
+        [AllowAnonymous]
         // POST: api/receptionists
         [HttpPost]
         public async Task<ActionResult<Receptionist>> CreateReceptionist([FromBody] ReceptionistCreateModel receptionistCreateModel)
@@ -78,6 +87,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return CreatedAtRoute("GetReceptionistById", new { id = newReceptionist.Id }, newReceptionist);
         }
 
+
+
+        [AllowAnonymous]
         // PUT: api/receptionists/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateReceptionist(Guid id, [FromBody] ReceptionistUpdateModel receptionistUpdateModel)
@@ -95,6 +107,10 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+
+        [AllowAnonymous]
         // PATCH: api/receptionists/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartiallyUpdateReceptionist(Guid id, [FromBody] JsonPatchDocument<ReceptionistUpdateModel> patchDocument)
@@ -120,6 +136,9 @@ namespace TrainingCenterManagementAPI.Controllers
             return NoContent();
         }
 
+
+
+        [AllowAnonymous]
         // DELETE: api/receptionists/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteReceptionist(Guid id)

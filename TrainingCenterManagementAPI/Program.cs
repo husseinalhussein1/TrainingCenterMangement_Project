@@ -28,10 +28,7 @@ builder.Services.AddControllers(option =>
     option.ReturnHttpNotAcceptable = true;
 })
     .AddXmlDataContractSerializerFormatters()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;//مشان ما يصير سلاسل غير منتهية
-    });
+    .AddNewtonsoftJson();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -63,7 +60,6 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<TrainingCenterManagementDbContext>(
     options => options.UseSqlServer(builder.Configuration["ConnectionStrings:TrainingCenterManagementDBConnectionString"]),
                                     ServiceLifetime.Scoped);
-//builder.Services.AddDbContext<TrainingCenterManagementDbContext>();
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -96,25 +92,21 @@ builder.Host.UseSerilog();   // Register serilog
 // Ahmad
 
 //token
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+// إعدادات التوثيق باستخدام JWT
+builder.Services.AddAuthentication().AddJwtBearer(options =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true, 
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Authentication:Issuer"],
-        ValidAudience = builder.Configuration["Authentication:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentication:SecretKey"]))
-    };
-});
+        options.TokenValidationParameters = new()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Authentication:Issuer"],
+            ValidAudience = builder.Configuration["Authentication:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretKey"]))
+        };
+    });
 
+builder.Host.UseSerilog();
 
 
 
