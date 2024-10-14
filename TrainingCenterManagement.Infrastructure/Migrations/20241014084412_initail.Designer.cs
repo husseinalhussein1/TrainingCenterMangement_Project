@@ -12,8 +12,8 @@ using TrainingCenterManagement.Infrastructure;
 namespace TrainingCenterManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(TrainingCenterManagementDbContext))]
-    [Migration("20241012040501_AddTableCertificate")]
-    partial class AddTableCertificate
+    [Migration("20241014084412_initail")]
+    partial class initail
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,9 +61,6 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AdministratorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -75,51 +72,22 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ReceptionistId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TraineeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TrainerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TrainingOfficerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdministratorId")
-                        .IsUnique()
-                        .HasFilter("[AdministratorId] IS NOT NULL");
-
-                    b.HasIndex("ReceptionistId")
-                        .IsUnique()
-                        .HasFilter("[ReceptionistId] IS NOT NULL");
-
-                    b.HasIndex("TraineeId")
-                        .IsUnique()
-                        .HasFilter("[TraineeId] IS NOT NULL");
-
-                    b.HasIndex("TrainerId")
-                        .IsUnique()
-                        .HasFilter("[TrainerId] IS NOT NULL");
-
-                    b.HasIndex("TrainingOfficerId")
-                        .IsUnique()
-                        .HasFilter("[TrainingOfficerId] IS NOT NULL");
-
-                    b.ToTable("Account");
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("TrainingCenterManagement.Domain.Administrator", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
@@ -138,6 +106,9 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("Administrators");
                 });
@@ -363,30 +334,7 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Receptionists");
-                });
-
-            modelBuilder.Entity("TrainingCenterManagement.Domain.Trainee", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
@@ -406,6 +354,41 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId")
+                        .IsUnique();
+
+                    b.ToTable("Receptionists");
+                });
+
+            modelBuilder.Entity("TrainingCenterManagement.Domain.Trainee", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
+
                     b.ToTable("Trainees");
                 });
 
@@ -413,6 +396,9 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BusinessLink")
@@ -443,6 +429,9 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId")
+                        .IsUnique();
+
                     b.ToTable("Trainers");
                 });
 
@@ -450,6 +439,9 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
@@ -468,6 +460,9 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
 
                     b.ToTable("TrainingOfficers");
                 });
@@ -502,37 +497,15 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TrainingCenterManagement.Domain.Account", b =>
+            modelBuilder.Entity("TrainingCenterManagement.Domain.Administrator", b =>
                 {
-                    b.HasOne("TrainingCenterManagement.Domain.Administrator", "Administrator")
-                        .WithOne("Account")
-                        .HasForeignKey("TrainingCenterManagement.Domain.Account", "AdministratorId");
+                    b.HasOne("TrainingCenterManagement.Domain.Account", "Account")
+                        .WithOne("Administrator")
+                        .HasForeignKey("TrainingCenterManagement.Domain.Administrator", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("TrainingCenterManagement.Domain.Receptionist", "Receptionist")
-                        .WithOne("Account")
-                        .HasForeignKey("TrainingCenterManagement.Domain.Account", "ReceptionistId");
-
-                    b.HasOne("TrainingCenterManagement.Domain.Trainee", "Trainee")
-                        .WithOne("Account")
-                        .HasForeignKey("TrainingCenterManagement.Domain.Account", "TraineeId");
-
-                    b.HasOne("TrainingCenterManagement.Domain.Trainer", "Trainer")
-                        .WithOne("Account")
-                        .HasForeignKey("TrainingCenterManagement.Domain.Account", "TrainerId");
-
-                    b.HasOne("TrainingCenterManagement.Domain.TrainingOfficer", "TrainingOfficer")
-                        .WithOne("Account")
-                        .HasForeignKey("TrainingCenterManagement.Domain.Account", "TrainingOfficerId");
-
-                    b.Navigation("Administrator");
-
-                    b.Navigation("Receptionist");
-
-                    b.Navigation("Trainee");
-
-                    b.Navigation("Trainer");
-
-                    b.Navigation("TrainingOfficer");
+                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("TrainingCenterManagement.Domain.Certificate", b =>
@@ -540,25 +513,25 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                     b.HasOne("TrainingCenterManagement.Domain.Course", "Course")
                         .WithMany("Certificates")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TrainingCenterManagement.Domain.Exam", "Exam")
                         .WithMany("Certificates")
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TrainingCenterManagement.Domain.Trainee", "Trainee")
                         .WithMany("Certificates")
                         .HasForeignKey("TraineeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TrainingCenterManagement.Domain.Trainer", "Trainer")
                         .WithMany("Certificates")
                         .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Course");
@@ -645,9 +618,65 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                     b.Navigation("Trainee");
                 });
 
-            modelBuilder.Entity("TrainingCenterManagement.Domain.Administrator", b =>
+            modelBuilder.Entity("TrainingCenterManagement.Domain.Receptionist", b =>
                 {
-                    b.Navigation("Account")
+                    b.HasOne("TrainingCenterManagement.Domain.Account", "Account")
+                        .WithOne("Receptionist")
+                        .HasForeignKey("TrainingCenterManagement.Domain.Receptionist", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("TrainingCenterManagement.Domain.Trainee", b =>
+                {
+                    b.HasOne("TrainingCenterManagement.Domain.Account", "Account")
+                        .WithOne("Trainee")
+                        .HasForeignKey("TrainingCenterManagement.Domain.Trainee", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("TrainingCenterManagement.Domain.Trainer", b =>
+                {
+                    b.HasOne("TrainingCenterManagement.Domain.Account", "Account")
+                        .WithOne("Trainer")
+                        .HasForeignKey("TrainingCenterManagement.Domain.Trainer", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("TrainingCenterManagement.Domain.TrainingOfficer", b =>
+                {
+                    b.HasOne("TrainingCenterManagement.Domain.Account", "Account")
+                        .WithOne("TrainingOfficer")
+                        .HasForeignKey("TrainingCenterManagement.Domain.TrainingOfficer", "AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("TrainingCenterManagement.Domain.Account", b =>
+                {
+                    b.Navigation("Administrator")
+                        .IsRequired();
+
+                    b.Navigation("Receptionist")
+                        .IsRequired();
+
+                    b.Navigation("Trainee")
+                        .IsRequired();
+
+                    b.Navigation("Trainer")
+                        .IsRequired();
+
+                    b.Navigation("TrainingOfficer")
                         .IsRequired();
                 });
 
@@ -675,17 +704,8 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                     b.Navigation("Presences");
                 });
 
-            modelBuilder.Entity("TrainingCenterManagement.Domain.Receptionist", b =>
-                {
-                    b.Navigation("Account")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TrainingCenterManagement.Domain.Trainee", b =>
                 {
-                    b.Navigation("Account")
-                        .IsRequired();
-
                     b.Navigation("Certificates");
 
                     b.Navigation("Payments");
@@ -695,17 +715,11 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
 
             modelBuilder.Entity("TrainingCenterManagement.Domain.Trainer", b =>
                 {
-                    b.Navigation("Account")
-                        .IsRequired();
-
                     b.Navigation("Certificates");
                 });
 
             modelBuilder.Entity("TrainingCenterManagement.Domain.TrainingOfficer", b =>
                 {
-                    b.Navigation("Account")
-                        .IsRequired();
-
                     b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618

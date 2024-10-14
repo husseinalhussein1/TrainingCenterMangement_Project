@@ -9,6 +9,7 @@ namespace TrainingCenterManagement.Infrastructure
   
     public class TrainingCenterManagementDbContext : DbContext
     {
+       
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Exam> Exams { get; set; }
@@ -20,6 +21,7 @@ namespace TrainingCenterManagement.Infrastructure
         public DbSet<Receptionist> Receptionists { get; set; }
         public DbSet<TrainingOfficer> TrainingOfficers { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         private readonly IConfiguration configuration;
 
@@ -29,6 +31,7 @@ namespace TrainingCenterManagement.Infrastructure
             : base(options)
         {
             this.configuration = configuration;
+            
         }
 
 
@@ -84,41 +87,30 @@ namespace TrainingCenterManagement.Infrastructure
 
 
 
-            // hussien
+            //Certifacate
+          modelBuilder.Entity<Certificate>()
+                        .HasOne(c => c.Trainer)
+                        .WithMany(t => t.Certificates) // إذا كان هناك علاقة عديدة إلى واحدة
+                        .HasForeignKey(c => c.TrainerId)
+                        .OnDelete(DeleteBehavior.NoAction); // تحديد الحذف بدون تأثير متتابع
 
-            ////////////////////////////////////////////////// data Test //////////////////////////////////////////////
-            // data seeding
-            // seeding default product with its brands
-            //modelBuilder.Entity<Product>().HasData(new Product()
-            //{
-            //    Id = 1,
-            //    Name = "Learn how to create console application from scratch"
-            //});
+         modelBuilder.Entity<Certificate>()
+                      .HasOne(c => c.Trainee)
+                      .WithMany(t => t.Certificates) // إذا كان هناك علاقة عديدة إلى واحدة
+                      .HasForeignKey(c => c.TraineeId)
+                      .OnDelete(DeleteBehavior.NoAction); // تحديد الحذف بدون تأثير متتابع
 
-            //modelBuilder.Entity<Brand>().HasData(new Brand()
-            //{
-            //    Id = 1,
-            //    Name = "Microsoft publish",
-            //    Description = "another book created by microsoft",
-            //    ProductId = 1
-            //});
+        modelBuilder.Entity<Certificate>()
+                        .HasOne(c => c.Exam)
+                        .WithMany(t => t.Certificates) // إذا كان هناك علاقة عديدة إلى واحدة
+                        .HasForeignKey(c => c.ExamId)
+                        .OnDelete(DeleteBehavior.NoAction); // تحديد الحذف بدون تأثير متتابع
 
-            //modelBuilder.Entity<Brand>().HasData(new Brand()
-            //{
-            //    Id = 2,
-            //    Name = "Amazon publish",
-            //    Description = "another book created by amazon",
-            //    ProductId = 1
-            //});
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
+        modelBuilder.Entity<Certificate>()
+                    .HasOne(c => c.Course)
+                      .WithMany(t => t.Certificates) // إذا كان هناك علاقة عديدة إلى واحدة
+                      .HasForeignKey(c => c.CourseId)
+                      .OnDelete(DeleteBehavior.NoAction); // تحديد الحذف بدون تأثير متتابع
 
 
 
@@ -139,33 +131,90 @@ namespace TrainingCenterManagement.Infrastructure
 
             //==============================
 
+            //(Account)
+            var account1 = new Account()
+            {
+                Id = Guid.Parse("4c14a5aa-218b-45fa-acbc-080dc4cb2c14"),
+                UserName = "ali",
+                Password = "1234567890",
+                Email = "ali@gmail.com",
+                IsRemember = true
+            };
+            var account2 = new Account()
+            {
+                Id = Guid.Parse("b8673de3-e88c-4e2d-95cb-4a963f53d048"),
+                UserName = "sara",
+                Password = "1234567890",
+                Email = "sara@gmail.com",
+                IsRemember = true
+            };
+            var account3 = new Account()
+            {
+                Id = Guid.Parse("5eec759d-d655-4753-90e9-987a60ba7f68"),
+                UserName = "omar",
+                Password = "1234567890",
+                Email = "omar@gmail.com",
+                IsRemember = true
+            };
+            var account4 = new Account()
+            {
+                Id = Guid.Parse("f56b5941-9ac4-4734-bf50-183fd689e8cd"),
+                UserName = "nada",
+                Password = "1234567890",
+                Email = "nada@gmail.com",
+                IsRemember = true
+            };
+            var account5 = new Account()
+            {
+                Id = Guid.Parse("2935753a-84fe-4a8a-8f08-a461a241a9db"),
+                UserName = "mohammad",
+                Password = "1234567890",
+                Email = "mohammad@gmail.com",
+                IsRemember = true
+            };
+            var account6 = new Account()
+            {
+                Id = Guid.Parse("fdafc22a-bd54-4e56-89f7-cacedc3bd0cd"),
+                UserName = "huda",
+                Password = "1234567890",
+                Email = "huda@gmail.com",
+                IsRemember = true
+            };
+            var account7 = new Account()
+            {
+                Id = Guid.Parse("12f5cb7d-edc3-444b-8dbc-5f7c8244cf25"),
+                UserName = "admin",
+                Password = "admin",
+                Email = "admin@gmail.com",
+                IsRemember = true
+            };
+
+            context.Accounts.Add(account1);
+            context.Accounts.Add(account2);
+            context.Accounts.Add(account3);
+            context.Accounts.Add(account4);
+            context.Accounts.Add(account5);
+            context.Accounts.Add(account6);
+            context.Accounts.Add(account7);
+
             //(Trainee)*4
             var trainee1 = new Trainee
             {
+                
                 FirstName = "Ali",
                 LastName = "Ahmad",
                 PhoneNumber = "1234567890",
-                Account = new Account
-                {
-                    UserName = "ali",
-                    Password = "1234567890",
-                    Email = "ali@gmail.com",
-                    IsRemember = true
-                }
+                AccountId = Guid.Parse("4c14a5aa-218b-45fa-acbc-080dc4cb2c14")   
             };
 
             var trainee2 = new Trainee
             {
+                
                 FirstName = "Sara",
                 LastName = "Salem",
                 PhoneNumber = "1234567890",
-                Account = new Account
-                {
-                    UserName = "sara",
-                    Password = "1234567890",
-                    Email = "sara@gmail.com",
-                    IsRemember = true
-                }
+                AccountId = Guid.Parse("b8673de3-e88c-4e2d-95cb-4a963f53d048")
+                
             };
 
             var trainee3 = new Trainee
@@ -173,13 +222,8 @@ namespace TrainingCenterManagement.Infrastructure
                 FirstName = "Omar",
                 LastName = "Khaled",
                 PhoneNumber = "1234567890",
-                Account = new Account
-                {
-                    UserName = "omar",
-                    Password = "1234567890",
-                    Email = "omar@gmail.com",
-                    IsRemember = true
-                }
+                AccountId = Guid.Parse("5eec759d-d655-4753-90e9-987a60ba7f68")
+               
             };
 
             var trainee4 = new Trainee
@@ -187,13 +231,8 @@ namespace TrainingCenterManagement.Infrastructure
                 FirstName = "Nada",
                 LastName = "Hassan",
                 PhoneNumber = "1234567890",
-                Account = new Account
-                {
-                    UserName = "nada",
-                    Password = "1234567890",
-                    Email = "nada@gmail.com",
-                    IsRemember = true
-                }
+                AccountId = Guid.Parse("f56b5941-9ac4-4734-bf50-183fd689e8cd")
+                
             };
             //==============================
 
@@ -206,13 +245,8 @@ namespace TrainingCenterManagement.Infrastructure
                 Specialty = "Software Development",
                 YearsOfExperience = 5,
                 BusinessLink = "http://linkedin.com/mohammad",
-                Account = new Account
-                {
-                    UserName = "mohammad",
-                    Password = "1234567890",
-                    Email = "mohammad@gmail.com",
-                    IsRemember = true
-                }
+                AccountId = Guid.Parse("2935753a-84fe-4a8a-8f08-a461a241a9db")
+               
             };
             //==============================
 
@@ -222,13 +256,8 @@ namespace TrainingCenterManagement.Infrastructure
                 FirstName = "Huda",
                 LastName = "Ali",
                 PhoneNumber = "1234567890",
-                Account = new Account
-                {
-                    UserName = "huda",
-                    Password = "1234567890",
-                    Email = "huda@gmail.com",
-                    IsRemember = true
-                }
+                AccountId = Guid.Parse("fdafc22a-bd54-4e56-89f7-cacedc3bd0cd")
+               
             };
             //==============================
 
@@ -238,13 +267,8 @@ namespace TrainingCenterManagement.Infrastructure
                 FirstName = "Ahmed",
                 LastName = "Hassan",
                 PhoneNumber = "1234567890",
-                Account = new Account
-                {
-                    UserName = "admin",
-                    Password = "admin",
-                    Email = "admin@gmail.com",
-                    IsRemember = true
-                }
+                AccountId = Guid.Parse("12f5cb7d-edc3-444b-8dbc-5f7c8244cf25")
+              
             };
             //==============================
 

@@ -1,6 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Text;
@@ -9,6 +7,7 @@ using TrainingCenterManagementAPI.Interfaces;
 using TrainingCenterManagementAPI.Services.Repositories;
 using Microsoft.Extensions.FileProviders;//for static file
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +82,7 @@ builder.Services.AddScoped<ITraineeRepository, TraineeRepository>(); // light we
 builder.Services.AddScoped<ITrainerRepository, TrainerRepository>(); // light weight
 builder.Services.AddScoped<ITrainingOfficerRepository, TrainingOfficerRepository>(); // light weight
 builder.Services.AddScoped<ICertificateRepository, CertificateRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 
 
@@ -93,48 +93,31 @@ builder.Logging.AddConsole();
 builder.Host.UseSerilog();   // Register serilog 
 
 
-
-//Police later
-//builder.Services.AddAuthorization(
-//    options =>
-//    {
-//        options.AddPolicy("userShouldBeAdminAndCourse11", policy =>
-//        {
-//            policy.RequireRole("user");
-//            policy.RequireClaim("course", "midad_11");
-//            policy.RequireAuthenticatedUser();
-//        });
-//    });
-
-
 // Ahmad
 
 //token
-builder.Services.AddAuthentication().AddJwtBearer(options =>
+builder.Services.AddAuthentication(options =>
 {
-    options.TokenValidationParameters = new()
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = builder.Configuration["Authentication:Issuer"],
-        ValidAudience = builder.Configuration["Authentication:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
-                                                .GetBytes(builder.Configuration["Authentication:SecretKey"])),
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateIssuerSigningKey = true
+        ValidateLifetime = true, 
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Authentication:Issuer"],
+        ValidAudience = builder.Configuration["Authentication:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentication:SecretKey"]))
     };
 });
 
 
 
 
-
-// cookie Don`t setting now be can set later
-
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
-//{
-//    options.Cookie.Name = "TrainingCenterManagementCookies";
-//    options.Cookie.MaxAge = TimeSpan.FromDays(2);
-//});
 
 
 

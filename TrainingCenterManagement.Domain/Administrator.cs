@@ -11,6 +11,7 @@ namespace TrainingCenterManagement.Domain
 
         // One-to-One Account
         public Account Account { get; set; }
-     
+        public required Guid AccountId { get; set; }
+
     }
 }

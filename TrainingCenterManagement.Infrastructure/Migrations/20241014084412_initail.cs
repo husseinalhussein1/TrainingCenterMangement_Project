@@ -6,16 +6,32 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TrainingCenterManagement.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initail : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsRemember = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Administrators",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -24,6 +40,12 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Administrators", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Administrators_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,6 +53,7 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -39,6 +62,12 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Receptionists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Receptionists_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,6 +75,7 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -54,6 +84,12 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trainees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trainees_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,6 +100,7 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                     Specialty = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     YearsOfExperience = table.Column<int>(type: "int", nullable: false),
                     BusinessLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -72,6 +109,12 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trainers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trainers_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,6 +122,7 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -87,51 +131,12 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TrainingOfficers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Account",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsRemember = table.Column<bool>(type: "bit", nullable: false),
-                    TraineeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TrainerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TrainingOfficerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    AdministratorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ReceptionistId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Account", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Account_Administrators_AdministratorId",
-                        column: x => x.AdministratorId,
-                        principalTable: "Administrators",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Account_Receptionists_ReceptionistId",
-                        column: x => x.ReceptionistId,
-                        principalTable: "Receptionists",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Account_Trainees_TraineeId",
-                        column: x => x.TraineeId,
-                        principalTable: "Trainees",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Account_Trainers_TrainerId",
-                        column: x => x.TrainerId,
-                        principalTable: "Trainers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Account_TrainingOfficers_TrainingOfficerId",
-                        column: x => x.TrainingOfficerId,
-                        principalTable: "TrainingOfficers",
-                        principalColumn: "Id");
+                        name: "FK_TrainingOfficers_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,6 +151,9 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     NumberOfLectures = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VedioUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ThumbnailUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TrainingOfficerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -281,6 +289,44 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Certificates",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Average = table.Column<float>(type: "real", nullable: false),
+                    url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
+                    TraineeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TrainerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Certificates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Certificates_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "CourseId");
+                    table.ForeignKey(
+                        name: "FK_Certificates_Exams_ExamId",
+                        column: x => x.ExamId,
+                        principalTable: "Exams",
+                        principalColumn: "ExamId");
+                    table.ForeignKey(
+                        name: "FK_Certificates_Trainees_TraineeId",
+                        column: x => x.TraineeId,
+                        principalTable: "Trainees",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Certificates_Trainers_TrainerId",
+                        column: x => x.TrainerId,
+                        principalTable: "Trainers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Presences",
                 columns: table => new
                 {
@@ -313,39 +359,30 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_AdministratorId",
-                table: "Account",
-                column: "AdministratorId",
-                unique: true,
-                filter: "[AdministratorId] IS NOT NULL");
+                name: "IX_Administrators_AccountId",
+                table: "Administrators",
+                column: "AccountId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_ReceptionistId",
-                table: "Account",
-                column: "ReceptionistId",
-                unique: true,
-                filter: "[ReceptionistId] IS NOT NULL");
+                name: "IX_Certificates_CourseId",
+                table: "Certificates",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_TraineeId",
-                table: "Account",
-                column: "TraineeId",
-                unique: true,
-                filter: "[TraineeId] IS NOT NULL");
+                name: "IX_Certificates_ExamId",
+                table: "Certificates",
+                column: "ExamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_TrainerId",
-                table: "Account",
-                column: "TrainerId",
-                unique: true,
-                filter: "[TrainerId] IS NOT NULL");
+                name: "IX_Certificates_TraineeId",
+                table: "Certificates",
+                column: "TraineeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Account_TrainingOfficerId",
-                table: "Account",
-                column: "TrainingOfficerId",
-                unique: true,
-                filter: "[TrainingOfficerId] IS NOT NULL");
+                name: "IX_Certificates_TrainerId",
+                table: "Certificates",
+                column: "TrainerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Courses_TrainingOfficerId",
@@ -397,13 +434,40 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 name: "IX_Presences_TraineeId",
                 table: "Presences",
                 column: "TraineeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Receptionists_AccountId",
+                table: "Receptionists",
+                column: "AccountId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trainees_AccountId",
+                table: "Trainees",
+                column: "AccountId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trainers_AccountId",
+                table: "Trainers",
+                column: "AccountId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrainingOfficers_AccountId",
+                table: "TrainingOfficers",
+                column: "AccountId",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Account");
+                name: "Administrators");
+
+            migrationBuilder.DropTable(
+                name: "Certificates");
 
             migrationBuilder.DropTable(
                 name: "CourseTrainee");
@@ -412,19 +476,16 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
                 name: "CourseTrainer");
 
             migrationBuilder.DropTable(
-                name: "Exams");
-
-            migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Presences");
 
             migrationBuilder.DropTable(
-                name: "Administrators");
+                name: "Receptionists");
 
             migrationBuilder.DropTable(
-                name: "Receptionists");
+                name: "Exams");
 
             migrationBuilder.DropTable(
                 name: "Trainers");
@@ -440,6 +501,9 @@ namespace TrainingCenterManagement.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TrainingOfficers");
+
+            migrationBuilder.DropTable(
+                name: "Accounts");
         }
     }
 }

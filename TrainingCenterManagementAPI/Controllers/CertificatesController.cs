@@ -28,7 +28,7 @@ namespace TrainingCenterManagementAPI.Controllers
             _mapper = mapper;
             _logger = logger;
         }
-
+        
         // GET: api/certificates
         [HttpGet(Name = "GetCertificates")]
         public async Task<ActionResult<List<CertificateViewModel>>> GetCertificates(int pageNumber = 1, int pageSize = 5, string? keyword = null)

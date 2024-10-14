@@ -6,6 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TrainingCenterManagement.Domain;
+using TrainingCenterManagementAPI.Interfaces;
+using TrainingCenterManagementAPI.VeiwModels;
 
 namespace TrainingCenterManagementAPI.Controllers
 {
@@ -13,88 +16,68 @@ namespace TrainingCenterManagementAPI.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-/*        private readonly IConfiguration configuration;
+        private readonly IConfiguration configuration;
+        private readonly IAccountRepository accountRepository;
 
-        //Post api/accounts/login
-
-        public AccountsController(IConfiguration configuration)
+        public AccountsController(IConfiguration configuration, IAccountRepository accountRepository)
         {
             this.configuration = configuration;
+            this.accountRepository = accountRepository;
         }
 
         [HttpPost("authenticate")]
-        public async Task<ActionResult<string>> Authenticate (AuthRequest request)
+        public async Task<ActionResult<string>> Authenticate(AuthRequest request)
         {
-            // token
-            *//* var user = ValidateUserInformation(request.Username, request.Password);
-             if(user == null)
-                 return Unauthorized();
+            // جلب المستخدم بناءً على اسم المستخدم وكلمة المرور
+            var userAccount = accountRepository.GetAccount(request.Username, request.Password);
 
-
-             var secretKey = new SymmetricSecurityKey(Encoding.ASCII
-                                                         .GetBytes(configuration["Authentication:SecretKey"]));
-
-             var signingCred= new SigningCredentials(secretKey,SecurityAlgorithms.HmacSha256);
-
-             var calims = new List<Claim>();
-
-             //calims.Add(new Claim("giver_name","ahmad"));
-             calims.Add(new Claim("giver_familyName", "shoriqee"));
-             calims.Add(new Claim("course", "midad_11"));
-             calims.Add(new Claim("sub", "125"));
-             calims.Add(new Claim(ClaimTypes.GivenName,"ahmad"));
-             calims.Add(new Claim(ClaimTypes.Role,"Admin")) ;
-
-
-
-
-             var securityToken = new JwtSecurityToken(
-                 configuration["Authentication:Issuer"],
-                 configuration["Authentication:Audience"],
-                 calims,
-                 DateTime.UtcNow,
-                 DateTime.UtcNow.AddHours(10),
-                 signingCred
-                 );
-
-             var token= new JwtSecurityTokenHandler().WriteToken(securityToken);
-             return Ok(token);*//*
-
-
-
-
-
-
-            //cookies
-            var user = ValidateUserInformation(request.Username, request.Password);
-            if (user == null)
+            if (userAccount == null)
+            {
                 return Unauthorized();
+            }
 
+            // تحديد الدور بناءً على نوع الحساب
+            string role = GetRoleForAccount(userAccount);
 
-            var calims = new List<Claim>();
+            // إعدادات المفتاح السري والتوقيع
+            var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:SecretKey"]));
+            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-            //calims.Add(new Claim("giver_name","ahmad"));
-            calims.Add(new Claim("giver_familyName", "shoriqee"));
-            calims.Add(new Claim("course", "midad_11"));
-            calims.Add(new Claim("sub", "125"));
-            calims.Add(new Claim(ClaimTypes.GivenName, "ahmad"));
-            calims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            // إعداد الـ Claims بناءً على الأدوار
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, userAccount.UserName),
+                new Claim(ClaimTypes.Role, role) // هنا نحدد الدور
+            };
 
+            var tokenOptions = new JwtSecurityToken(
+                issuer: configuration["Authentication:Issuer"],
+                audience: configuration["Authentication:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: signingCredentials
+            );
 
-            var calimsIdentity= new ClaimsIdentity(calims,CookieAuthenticationDefaults.AuthenticationScheme);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                                            new ClaimsPrincipal(calimsIdentity));
-
-
-
-          
-            return Ok("HelloWorld");
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return Ok(new { Token = token });
         }
-        // هذا التابع بالوظيفة يجب ان يجلب من appsetting  معلومات المستخدم
-        private object ValidateUserInformation(string username, string password)
+
+        // دالة لتحديد الدور بناءً على نوع الحساب
+        private string GetRoleForAccount(Account userAccount)
         {
-            return new AmazonUser() { FirstName = "Ahmad", LastName = "AboHumid",Username="Ahmad2024Super",UserId=1, Role="admin" };
-        }*/
+            if (userAccount.Administrator != null)
+            {
+                return "Admin";
+            }
+            else if (userAccount.TrainingOfficer != null)
+            {
+                return "TrainingOfficer";
+            }
+            else if (userAccount.Receptionist != null)
+            {
+                return "Receptionist";
+            }
+            return "User"; // إذا لم يكن له أي دور محدد
+        }
     }
 }

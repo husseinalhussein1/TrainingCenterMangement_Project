@@ -20,27 +20,25 @@ namespace TrainingCenterManagement.Domain
 
         public Account()
         {
+            if(Id!=Guid.Empty)
             Id = Guid.NewGuid();    
         }
 
+
+
         // One-to-One Trainee - Account
-        public Guid? TraineeId { get; set; }
         public Trainee Trainee { get; set; }
 
         // One-to-One Trainer - Account
-        public Guid? TrainerId { get; set; }
         public Trainer Trainer { get; set; }
 
         // One-to-One TrainingOfficer - Account
-        public Guid? TrainingOfficerId { get; set; }
         public TrainingOfficer TrainingOfficer { get; set; }
 
         // One-to-One Administrator - Account
-        public Guid? AdministratorId { get; set; }
         public Administrator Administrator { get; set; }
 
         // One-to-One Receptionist - Account
-        public Guid? ReceptionistId { get; set; }
         public Receptionist Receptionist { get; set; }
     }
 }
