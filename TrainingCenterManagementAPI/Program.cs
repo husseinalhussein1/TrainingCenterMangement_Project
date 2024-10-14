@@ -93,18 +93,18 @@ builder.Host.UseSerilog();   // Register serilog
 
 //token
 // إعدادات التوثيق باستخدام JWT
-builder.Services.AddAuthentication().AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new()
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Authentication:Issuer"],
-            ValidAudience = builder.Configuration["Authentication:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretKey"]))
-        };
-    });
+//builder.Services.AddAuthentication().AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new()
+//        {
+//            ValidateIssuer = true,
+//            ValidateAudience = true,
+//            ValidateIssuerSigningKey = true,
+//            ValidIssuer = builder.Configuration["Authentication:Issuer"],
+//            ValidAudience = builder.Configuration["Authentication:Audience"],
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretKey"]))
+//        };
+//    });
 
 builder.Host.UseSerilog();
 
